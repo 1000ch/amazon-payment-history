@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Amazon History",
+  "short_name": "AH",
+  "version": "1.0.0",
+  "description": "Amazon History.",
+  "author": "1000ch",
+  "permissions": [
+    "tabs",
+    "https://www.amazon.co.jp/gp/css/order-history"
+  ],
+  "browser_action": {
+    "default_title": "Amazon History",
+    "default_popup": "html/popup.html"
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "mac": "MacCtrl+B"
+      },
+      "description": "Open popup window."
+    }
+  },
+  "offline_enabled": false
+}
