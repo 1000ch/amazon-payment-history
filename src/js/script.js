@@ -1,28 +1,45 @@
 {
-  function load(year) {
-    let number = 0;
-    const baseUrl = `https://www.amazon.co.jp/gp/css/order-history?digitalOrders=1&unifiedOrders=1&orderFilter=year-${year}`;
+  function fetchPage(object) {
+    let params = Object.assign({
+      digitalOrders: 1,
+      unifiedOrders: 1
+    }, object);
+    let querystring = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
 
-    return fetch(baseUrl, {
+    return fetch(`https://www.amazon.co.jp/gp/css/order-history?${querystring}`, {
       credentials: 'include'
-    }).then(response => response.text()).then(html => {
+    });
+  }
+
+  function load(year) {
+    return fetchPage({
+      orderFilter: `year-${year}`
+    })
+    .then(response => response.text())
+    .then(html => {
       const promises = [];
       let number = 0;
       let count = Number($(html).find('.num-orders').text().replace('件', ''));
+
       do {
-        promises.push(fetch(`${baseUrl}&startIndex=${number * 10}`, {
-          credentials: 'include'
-        }).then(response => response.text()).then(html => {
-          const orders = [];
-          for (const order of $(html).find('div.order')) {
-            const $values = $(order).find('div.order-info span.value');
-            orders.push({
-              date: $values.get(0).textContent.trim(),
-              price: Number($values.get(1).textContent.match(/[0-9]/g).join(''))
-            });
-          }
-          return orders;
-        }));
+        promises.push(
+          fetchPage({
+            orderFilter: `year-${year}`,
+            startIndex: `${number * 10}`
+          })
+          .then(response => response.text())
+          .then(html => {
+            const orders = [];
+            for (const order of $(html).find('div.order')) {
+              const $values = $(order).find('div.order-info span.value');
+              orders.push({
+                date: $values.get(0).textContent.trim(),
+                price: Number($values.get(1).textContent.match(/[0-9]/g).join(''))
+              });
+            }
+            return orders;
+          })
+        );
 
         number++;
         count -= 10;
@@ -47,13 +64,13 @@
     }
   }
 
-  const total = {};
   Promise.all(promises).then(results => {
+    const total = {};
     for (const result of results) {
       total[result.year] = Array.prototype.concat.apply([], result.data);
     }
     return total;
-  }).then(() => {
+  }).then(total => {
     chrome.runtime.sendMessage(total);
   });
 }
