@@ -11,39 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
+    const loading = document.querySelector('.Loading');
     const container = document.querySelector('.Container');
+
+    loading.classList.add('-hidden');
+
     let all = 0;
     Object.keys(data).forEach(year => {
-      let item = document.createElement('div');
-      let y = document.createElement('div');
-      let p = document.createElement('div');
-
       let total = 0;
       data[year].forEach(i => total += i.price);
       all += total;
 
-      item.className = 'Item';
-      y.textContent = `${year}年`;
-      y.className = 'Item__Year';
-      p.textContent = `${total}円`;
-      p.className = 'Item__Price';
-
-      item.appendChild(y);
-      item.appendChild(p);
-      container.appendChild(item);
+      let div = document.createElement('div');
+      div.className = 'Item';
+      div.textContent = `${year}年: ${total}円`;
+      container.appendChild(div);
     });
 
-    const item = document.createElement('div');
-    const t = document.createElement('div');
-    const y = document.createElement('div');
-    item.className = 'Item';
-    t.textContent = '合計';
-    t.className = 'Item__Year';
-    y.textContent = `${all}円`;
-    y.className = 'Item__Price';
-    item.appendChild(t);
-    item.appendChild(y);
-    container.appendChild(item);
+    let div = document.createElement('div');
+    div.className = 'Item';
+    div.textContent = `合計: ${all}円`;
+    container.appendChild(div);
   });
 
   chrome.tabs.executeScript({
