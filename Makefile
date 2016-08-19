@@ -1,4 +1,4 @@
-PROJECTNAME="Amazon History"
+PROJECTNAME="Amazon Payment History"
 
 all: prelogue archive epilogue
 
@@ -8,7 +8,7 @@ prelogue:
 	@echo ""
 
 archive: ./src
-	@zip amazon-history.zip -r ./src
+	@zip aph.zip -r ./src
 
 epilogue:
 	@echo ""
