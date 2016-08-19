@@ -1,26 +1,21 @@
 {
   "manifest_version": 2,
-  "name": "Amazon History",
-  "short_name": "AH",
+  "name": "Amazon Payment History",
+  "short_name": "APH",
   "version": "1.0.1",
-  "description": "Amazon History.",
+  "description": "Amazon Payment History.",
   "author": "1000ch",
   "permissions": [
+    "background",
     "tabs",
     "https://www.amazon.co.jp/gp/css/order-history"
   ],
   "browser_action": {
-    "default_title": "Amazon History",
-    "default_popup": "html/popup.html"
+    "default_title": "Amazon Payment History"
   },
-  "commands": {
-    "_execute_browser_action": {
-      "suggested_key": {
-        "default": "Ctrl+B",
-        "mac": "MacCtrl+B"
-      },
-      "description": "Open popup window."
-    }
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
   },
   "offline_enabled": false
 }

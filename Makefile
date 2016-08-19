@@ -1,4 +1,4 @@
-PROJECTNAME="Amazon History"
+PROJECTNAME="Amazon Payment History"
 
 all: prelogue archive epilogue
 
