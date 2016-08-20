@@ -77,7 +77,7 @@
     if (m) {
       const year = m[1];
       promises.push(loadPaymentData(year).then(result => {
-        if (year !== currentYear && result.year === year) {
+        if (year !== currentYear && result && result.year === year) {
           return result;
         } else {
           return getPaymentData(year).then(data => savePaymentData(year, data));
