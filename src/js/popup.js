@@ -1,19 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
-  chrome.runtime.onMessage.addListener((data, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((results, sender, sendResponse) => {
     document.querySelector('.Loading').classList.add('-hidden');
     const container = document.querySelector('.Container');
 
     let all = 0;
-    Object.keys(data).forEach(year => {
+    for (const result of results) {
       let total = 0;
-      data[year].forEach(i => total += i.price);
+      result.data.forEach(i => total += i.price);
       all += total;
 
       let div = document.createElement('div');
       div.className = 'Item';
-      div.textContent = `${year}年: ${total}円`;
+      div.textContent = `${result.year}年: ${total}円`;
       container.appendChild(div);
-    });
+    }
 
     let div = document.createElement('div');
     div.className = 'Item';

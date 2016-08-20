@@ -86,13 +86,5 @@
     }
   }
 
-  Promise.all(promises).then(results => {
-    const total = {};
-    for (const result of results) {
-      total[result.year] = result.data;
-    }
-    return total;
-  }).then(total => {
-    chrome.runtime.sendMessage(total);
-  });
+  Promise.all(promises).then(results => chrome.runtime.sendMessage(results));
 }
