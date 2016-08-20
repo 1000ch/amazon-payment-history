@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   chrome.runtime.onMessage.addListener((results, sender, sendResponse) => {
-    document.querySelector('.Loading').classList.add('-hidden');
+    const share = document.querySelector('.Share');
+    const loading = document.querySelector('.Loading');
     const container = document.querySelector('.Container');
+
+    loading.classList.add('-hidden');
 
     let all = 0;
     for (const result of results) {
@@ -19,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     div.className = 'Item';
     div.textContent = `合計: ${all.toLocaleString()}円`;
     container.appendChild(div);
+
+    const url = 'https://chrome.google.com/webstore/detail/pgccjlmicdpgkbllgiafapgbnciodipb';
+    const text = `Amazonで使ったお金は${results.length}年間で${all.toLocaleString()}円です！`;
+    share.href = `https://twitter.com/share?url=${url}&text=${encodeURIComponent(text)}`;
+    share.classList.remove('-hidden');
   });
 
   chrome.tabs.executeScript({

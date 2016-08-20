@@ -7,6 +7,10 @@
   justify-content: center;
 }
 
+.Share.-hidden {
+  display: none;
+}
+
 .Loading {
   fill: tomato;
 }
