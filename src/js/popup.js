@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let div = document.createElement('div');
       div.className = 'Item';
-      div.textContent = `${result.year}年: ${total}円`;
+      div.textContent = `${result.year}年: ${total.toLocaleString()}円`;
       container.appendChild(div);
     }
 
     let div = document.createElement('div');
     div.className = 'Item';
-    div.textContent = `合計: ${all}円`;
+    div.textContent = `合計: ${all.toLocaleString()}円`;
     container.appendChild(div);
   });
 
