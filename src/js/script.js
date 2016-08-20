@@ -1,21 +1,36 @@
 {
-  function fetchPage(object) {
-    let params = Object.assign({
-      digitalOrders: 1,
-      unifiedOrders: 1
-    }, object);
-    let querystring = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+  const concat = Array.prototype.concat;
+  const currentYear = new Date().getFullYear().toString();
 
+  function fetchOrderHistoryPage(params) {
+    let querystring = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
     return fetch(`https://www.amazon.co.jp/gp/css/order-history?${querystring}`, {
       credentials: 'include'
+    }).then(response => response.text());
+  }
+
+  function loadPaymentData(year) {
+    return new Promise(resolve => {
+      chrome.storage.local.get(`amazon-payment-history-${year}`, items => {
+        resolve(items[`amazon-payment-history-${year}`]);
+      });
     });
   }
 
-  function load(year) {
-    return fetchPage({
+  function savePaymentData(year, data) {
+    return new Promise(resolve => {
+      const saveData = {};
+      saveData[`amazon-payment-history-${year}`] = data;
+      chrome.storage.local.set(saveData, () => resolve(data))
+    });
+  }
+
+  function getPaymentData(year) {
+    return fetchOrderHistoryPage({
+      digitalOrders: 1,
+      unifiedOrders: 1,
       orderFilter: `year-${year}`
     })
-    .then(response => response.text())
     .then(html => {
       const promises = [];
       let number = 0;
@@ -23,11 +38,12 @@
 
       do {
         promises.push(
-          fetchPage({
+          fetchOrderHistoryPage({
+            digitalOrders: 1,
+            unifiedOrders: 1,
             orderFilter: `year-${year}`,
             startIndex: `${number * 10}`
           })
-          .then(response => response.text())
           .then(html => {
             const orders = [];
             for (const order of $(html).find('div.order')) {
@@ -45,7 +61,12 @@
         count -= 10;
       } while (count > 0);
 
-      return Promise.all(promises);
+      return Promise.all(promises).then(data => {
+        return {
+          year: year,
+          data: concat.apply([], data)
+        };
+      });
     });
   }
 
@@ -55,11 +76,12 @@
     let m = /year-(\d\d\d\d)/.exec(option.value);
     if (m) {
       const year = m[1];
-      promises.push(load(year).then(data => {
-        return {
-          data: data,
-          year: year
-        };
+      promises.push(loadPaymentData(year).then(result => {
+        if (year !== currentYear && result.year === year) {
+          return result;
+        } else {
+          return getPaymentData(year).then(data => savePaymentData(year, data));
+        }
       }));
     }
   }
@@ -67,7 +89,7 @@
   Promise.all(promises).then(results => {
     const total = {};
     for (const result of results) {
-      total[result.year] = Array.prototype.concat.apply([], result.data);
+      total[result.year] = result.data;
     }
     return total;
   }).then(total => {
