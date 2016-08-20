@@ -76,13 +76,13 @@
     let m = /year-(\d\d\d\d)/.exec(option.value);
     if (m) {
       const year = m[1];
-      promises.push(loadPaymentData(year).then(result => {
-        if (year !== currentYear && result && result.year === year) {
-          return result;
-        } else {
-          return getPaymentData(year).then(data => savePaymentData(year, data));
-        }
-      }));
+      if (year === currentYear) {
+        promises.push(getPaymentData(year));
+      } else {
+        promises.push(loadPaymentData(year).then(result => {
+          return result || getPaymentData(year).then(data => savePaymentData(year, data));
+        }));
+      }
     }
   }
 
