@@ -3,7 +3,9 @@
   const currentYear = new Date().getFullYear().toString();
 
   function fetchOrderHistoryPage(params) {
-    let querystring = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+    const keys = Object.keys(params);
+    const querystring = keys.map(key => `${key}=${params[key]}`).join('&');
+
     return fetch(`https://www.amazon.co.jp/gp/css/order-history?${querystring}`, {
       credentials: 'include'
     }).then(response => response.text());
@@ -30,8 +32,7 @@
       digitalOrders: 1,
       unifiedOrders: 1,
       orderFilter: `year-${year}`
-    })
-    .then(html => {
+    }).then(html => {
       const promises = [];
       let number = 0;
       let count = Number($(html).find('.num-orders').text().replace('件', ''));
@@ -43,8 +44,7 @@
             unifiedOrders: 1,
             orderFilter: `year-${year}`,
             startIndex: `${number * 10}`
-          })
-          .then(html => {
+          }).then(html => {
             const orders = [];
             for (const order of $(html).find('div.order')) {
               const $values = $(order).find('div.order-info span.value');
@@ -86,5 +86,7 @@
     }
   }
 
-  Promise.all(promises).then(results => chrome.runtime.sendMessage(results));
+  Promise.all(promises).then(results => {
+    chrome.runtime.sendMessage(results);
+  });
 }
