@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Amazon Payment History",
   "short_name": "APH",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Amazon Payment History.",
   "author": "1000ch",
   "permissions": [
