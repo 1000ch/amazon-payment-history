@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Amazon Payment History",
+  "name": "APH",
   "short_name": "APH",
   "version": "1.2.0",
-  "description": "Amazon Payment History.",
+  "description": "Sum up payment history for amazon.",
   "author": "1000ch",
   "permissions": [
     "background",
