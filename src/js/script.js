@@ -1,6 +1,6 @@
 {
   const concat = Array.prototype.concat;
-  const currentYear = new Date().getFullYear().toString();
+  const currentYear = new Date().getFullYear();
 
   function fetchOrderHistoryPage(params) {
     const keys = Object.keys(params);
@@ -75,7 +75,7 @@
   for (const option of options) {
     let m = /year-(\d\d\d\d)/.exec(option.value);
     if (m) {
-      const year = m[1];
+      const year = Number(m[1]);
       if (year === currentYear) {
         promises.push(getPaymentData(year));
       } else {

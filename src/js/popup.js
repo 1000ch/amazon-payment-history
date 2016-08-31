@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loading.classList.add('-hidden');
 
     let all = 0;
-    for (const result of results) {
+    for (const result of results.sort((a, b) => b.year - a.year)) {
       let total = 0;
       result.data.forEach(i => total += i.price);
       all += total;
