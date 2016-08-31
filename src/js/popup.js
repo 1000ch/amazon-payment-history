@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     div.textContent = `合計: ${all.toLocaleString()}円`;
     container.appendChild(div);
 
+    div = document.createElement('div');
+    div.className = 'Item';
+    div.textContent = `平均: ${Math.round(all / results.length).toLocaleString()}円/年`;
+    container.appendChild(div);
+
     const url = 'https://chrome.google.com/webstore/detail/pgccjlmicdpgkbllgiafapgbnciodipb';
     const text = `Amazonで使ったお金は${results.length}年間で${all.toLocaleString()}円です！`;
     share.href = `https://twitter.com/share?url=${url}&text=${encodeURIComponent(text)}`;
