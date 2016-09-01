@@ -23,15 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     div.textContent = `合計: ${all.toLocaleString()}円`;
     container.appendChild(div);
 
-    div = document.createElement('div');
-    div.className = 'Item';
-    div.textContent = `年平均: ${Math.round(all / results.length).toLocaleString()}円`;
-    container.appendChild(div);
+    if (all !== 0) {
+      div = document.createElement('div');
+      div.className = 'Item';
+      div.textContent = `年平均: ${Math.round(all / results.length).toLocaleString()}円`;
+      container.appendChild(div);
 
-    div = document.createElement('div');
-    div.className = 'Item';
-    div.textContent = `月平均: ${Math.round(all / (results.length * 12)).toLocaleString()}円`;
-    container.appendChild(div);
+      div = document.createElement('div');
+      div.className = 'Item';
+      div.textContent = `月平均: ${Math.round(all / (results.length * 12)).toLocaleString()}円`;
+      container.appendChild(div);
+    }
 
     const url = 'https://chrome.google.com/webstore/detail/pgccjlmicdpgkbllgiafapgbnciodipb';
     const text = `Amazonで使ったお金は${results.length}年間で${all.toLocaleString()}円です！`;
