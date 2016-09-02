@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "APH",
   "short_name": "APH",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Sum up payment history for amazon.",
   "author": "1000ch",
   "permissions": [
