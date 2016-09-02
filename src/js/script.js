@@ -70,7 +70,7 @@
     });
   }
 
-  const options = document.querySelectorAll('div.top-controls select option');
+  const options = document.querySelectorAll('form.time-period-chooser select option');
   const promises = [];
   for (const option of options) {
     let m = /year-(\d\d\d\d)/.exec(option.value);
