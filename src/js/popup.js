@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   chrome.runtime.onMessage.addListener((results, sender, sendResponse) => {
-    const share = document.querySelector('.Share');
     const loading = document.querySelector('.Loading');
     const container = document.querySelector('.Container');
 
@@ -34,11 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
       div.textContent = `月平均: ${Math.round(all / (results.length * 12)).toLocaleString()}円`;
       container.appendChild(div);
     }
-
-    const url = 'https://chrome.google.com/webstore/detail/pgccjlmicdpgkbllgiafapgbnciodipb';
-    const text = `Amazonで使ったお金は${results.length}年間で${all.toLocaleString()}円です！`;
-    share.href = `https://twitter.com/share?url=${url}&text=${encodeURIComponent(text)}`;
-    share.classList.remove('-hidden');
   });
 
   chrome.tabs.executeScript({
