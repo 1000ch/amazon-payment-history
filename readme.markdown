@@ -1,6 +1,6 @@
 # amazon-payment-history
 
-![](capture.png)
+![demo](capture.png)
 
 ## Install
 
