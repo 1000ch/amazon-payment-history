@@ -1,6 +1,6 @@
 .Container {
-  width: 160px;
-  min-height: 160px;
+  width: 180px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
