@@ -1,7 +1,7 @@
 function openPopup(tabId) {
   chrome.browserAction.setPopup({
     tabId: tabId,
-    popup: 'html/popup.html'
+    popup: './html/popup.html'
   });
 }
 
